@@ -1,6 +1,6 @@
 services:
   domain-expiry:
-    image: ghcr.io/hackpig1974/domain-expiry:latest
+    image: damon1974/domain-expiry:latest
     container_name: domain-expiry
     env_file: .env
     environment:

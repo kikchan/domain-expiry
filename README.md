@@ -10,7 +10,7 @@ A beautiful domain expiration monitoring service for [Homepage](https://gethomep
 - 📅 **Expiration Tracking** - Shows days remaining for each domain
 - 🔄 **Auto-Refresh** - Configurable cache (default 6 hours)
 - 🌍 **All TLDs** - 3-tier fallback system supports 7,500+ TLDs worldwide
-- 🐳 **Docker Ready** - Available as pre-built package on GHCR
+- 🐳 **Docker Ready** - Available on GitHub Container Registry & Docker Hub
 - ⚡ **Fast & Lightweight** - Python FastAPI backend
 - 🎨 **Homepage Native** - Uses built-in customapi widget
 
@@ -100,7 +100,14 @@ cd /path/to/containers/domain-expiry
 ```
 
 **Step 2: Pull the Docker Image**
+
+Choose either registry:
+
 ```bash
+# Option 1: Docker Hub (Recommended)
+docker pull damon1974/domain-expiry:latest
+
+# Option 2: GitHub Container Registry
 docker pull ghcr.io/hackpig1974/domain-expiry:latest
 ```
 
