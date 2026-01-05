@@ -46,7 +46,7 @@ curl -O https://raw.githubusercontent.com/Hackpig1974/domain-expiry/main/domain-
 
 **Step 3: Pull the Docker Image**
 ```bash
-docker pull ghcr.io/hackpig1974/domain-expiry:latest
+docker compose pull
 ```
 
 **Step 4: Create Configuration File**
@@ -66,7 +66,7 @@ Add your configuration:
 DOMAINS=example.com,google.com,github.com
 RDAP_BASE=https://rdap.org/domain
 WHOIS_FALLBACK_ENABLED=false
-WHOISXML_API_KEY=
+WHOISXML_API_KEY=YOUR_API_KEY
 ALERT_DAYS=183
 REFRESH_MINUTES=360
 TZ=America/Denver
@@ -365,62 +365,6 @@ REFRESH_MINUTES=720  # 12 hours
 
 ---
 
-## 📡 API Endpoints
-
-### `GET /status`
-
-Returns full domain information with metadata.
-
-**Query Parameters:**
-- `force=true` - Force refresh cache
-
-**Response:**
-```json
-{
-  "updated": "2024-12-21T16:30:00Z",
-  "domains": [
-    {
-      "domain": "example.com",
-      "expires": "2025-06-15T00:00:00Z",
-      "expires_us": "06/15/2025",
-      "days_left": 176,
-      "label": "06/15/2025 (176d)",
-      "alert": false,
-      "source": "rdap"
-    }
-  ],
-  "refresh_minutes": 360,
-  "alert_days": 183,
-  "rdap_base": "https://rdap.org/domain"
-}
-```
-
-### `GET /flat`
-
-Returns simplified text-based format.
-
-**Response:**
-```json
-{
-  "line1": "example.com — Exp: 06/15/2025 (176d)",
-  "line2": "🔴 urgent.com — Exp: 🔴 01/10/2025 (20d)",
-  "updated": "2024-12-21T16:30:00Z"
-}
-```
-
-### `GET /healthz`
-
-Health check endpoint for monitoring.
-
-**Response:**
-```json
-{
-  "ok": true
-}
-```
-
----
-
 ## 🔧 Troubleshooting
 
 ### Widget Shows "Error" or "N/A"
@@ -548,23 +492,6 @@ A: Yes! The `customapi` widget has been available for a long time.
 
 **Q: How many domains can I monitor?**  
 A: Tested up to 50. More than that, consider multiple instances or longer cache times.
-
----
-
-## 🗺️ Roadmap
-
-Potential future features (PRs welcome!):
-
-- [ ] Webhook notifications (Discord, Slack, email)
-- [ ] SSL certificate expiry monitoring
-- [ ] DNS record monitoring
-- [ ] Historical data/trends
-- [ ] Web UI for configuration
-- [ ] Multiple RDAP provider support
-- [ ] Prometheus metrics export
-- [ ] Persistent cache across restarts
-- [ ] Auto-renewal reminders
-- [ ] Import domains from file
 
 ---
 
