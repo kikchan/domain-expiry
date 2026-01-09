@@ -2,6 +2,8 @@
 
 A beautiful domain expiration monitoring service for [Homepage](https://gethomepage.dev/) dashboard that tracks your domain renewals and alerts you before they expire.
 
+**🌐 Want a standalone web dashboard?** Check out [domain-expiry-web](https://github.com/Hackpig1974/domain-expiry-web) for a beautiful interface with light/dark themes, color-coded status, and live countdown timer.
+
 ![Domain Expiry Widget](screenshot.png)
 
 ## ✨ Features
