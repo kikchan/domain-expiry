@@ -38,6 +38,17 @@ _cache = {"data": None, "ts": 0.0}
 _session = requests.Session()
 _session.headers.update({"User-Agent": "domain-expiry/1.1 (+rdap/whois client)"})
 
+MANUAL_EXPIRY = {}
+_manual = os.getenv("MANUAL_EXPIRY", "").strip()
+
+if _manual:
+    for item in _manual.split(","):
+        item = item.strip()
+        if "=" not in item:
+            continue
+        domain, date = item.split("=", 1)
+        MANUAL_EXPIRY[domain.strip().lower()] = date.strip()
+
 if WHOIS_FALLBACK_ENABLED and not WHOIS_AVAILABLE:
     logger.warning("WHOIS fallback enabled but python-whois not installed. Install with: pip install python-whois")
 
@@ -210,7 +221,12 @@ def _fetch_whois(domain: str) -> Dict:
         }
 
 def _fetch_one(domain: str) -> Dict:
-    """Tier 1: Try RDAP first (fastest, free, works for most domains)"""
+    """Tier 0: Manual override, then RDAP."""
+
+    manual = _fetch_manual(domain)
+    if manual:
+        return manual
+
     url = f"{RDAP_BASE}/{domain}"
     
     try:
@@ -290,6 +306,46 @@ def _fetch_one(domain: str) -> Dict:
             "error": str(e),
         }
 
+def _fetch_manual(domain: str) -> Dict | None:
+    manual = MANUAL_EXPIRY.get(domain.lower())
+
+    if not manual:
+        return None
+
+    try:
+        exp_dt = dtparse.parse(manual)
+
+        if exp_dt.tzinfo is None:
+            exp_dt = exp_dt.replace(tzinfo=timezone.utc)
+        else:
+            exp_dt = exp_dt.astimezone(timezone.utc)
+
+        today = datetime.now(timezone.utc).date()
+        days_left = (exp_dt.date() - today).days
+        expires_us = exp_dt.strftime("%m/%d/%Y")
+        alert = days_left <= ALERT_DAYS
+
+        label = (
+            f"{ALERT_EMOJI} {expires_us} ({days_left}d)"
+            if alert
+            else f"{expires_us} ({days_left}d)"
+        )
+
+        logger.info(f"Using manual expiry for {domain}: {expires_us}")
+
+        return {
+            "domain": domain,
+            "expires": exp_dt.isoformat(),
+            "expires_us": expires_us,
+            "days_left": days_left,
+            "label": label,
+            "alert": alert,
+            "source": "manual",
+        }
+
+    except Exception as e:
+        logger.error(f"Invalid MANUAL_EXPIRY entry for {domain}: {e}")
+        return None
 
 def _refresh(force: bool = False):
     now = time.monotonic()
@@ -308,6 +364,7 @@ def _refresh(force: bool = False):
         "rdap_base": RDAP_BASE,
         "whois_fallback_enabled": WHOIS_FALLBACK_ENABLED,
         "whoisxml_api_enabled": bool(WHOISXML_API_KEY),
+        "manual_expiry": MANUAL_EXPIRY,
     }
     _cache["ts"] = now
 

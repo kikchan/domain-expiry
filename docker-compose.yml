@@ -1,13 +1,13 @@
 services:
   domain-expiry:
-    image: damon1974/domain-expiry:latest
     container_name: domain-expiry
+    build: .
     env_file: .env
     environment:
-      - TZ=${TZ:-America/Denver}
+      TZ: ${TZ:-Europe/Madrid}
     ports:
-      - "8088:8000"
-    restart: unless-stopped
+      - "2031:8000"
+    restart: always
     healthcheck:
       test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:8000/healthz || exit 1"]
       interval: 60s
