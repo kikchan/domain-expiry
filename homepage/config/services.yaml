@@ -9,4 +9,4 @@
           mappings:
             items: domains
             name: domain
-            label: label            # shows "🔴 MM/DD/YYYY (Xd)" when <= ALERT_DAYS
+            label: label            # shows "🔴 dd/mm/yyyy (Xd)" when <= ALERT_DAYS

@@ -256,16 +256,16 @@ docker restart homepage
 
 The widget should now show:
 - List of domains being monitored
-- Expiration dates in MM/DD/YYYY format
+- Expiration dates in dd/mm/yyyy format
 - Days remaining in parentheses
 - 🔴 Red alert emoji for domains expiring soon (within ALERT_DAYS threshold)
 
 **Example Widget Display:**
 ```
 Domain Expirations
-├─ example.com — Exp: 🔴 01/15/2026 (23d)
-├─ google.com — Exp: 09/14/2028 (997d)
-└─ github.com — Exp: 10/09/2025 (291d)
+├─ example.com — Exp: 🔴 15/01/2026 (23d)
+├─ google.com — Exp: 14/09/2028 (997d)
+└─ github.com — Exp: 09/10/2025 (291d)
 ```
 
 ---

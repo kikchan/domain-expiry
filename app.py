@@ -114,7 +114,7 @@ def _fetch_whoisxml(domain: str) -> Dict:
         exp_dt = dtparse.isoparse(expires_date_str).astimezone(timezone.utc)
         today = datetime.now(timezone.utc).date()
         days_left = (exp_dt.date() - today).days
-        expires_us = exp_dt.strftime("%m/%d/%Y")
+        expires_us = exp_dt.strftime("%d/%m/%Y")
         alert = days_left <= ALERT_DAYS
         
         label = f"{ALERT_EMOJI} {expires_us} ({days_left}d)" if alert else f"{expires_us} ({days_left}d)"
@@ -185,7 +185,7 @@ def _fetch_whois(domain: str) -> Dict:
         
         today = datetime.now(timezone.utc).date()
         days_left = (exp_dt.date() - today).days
-        expires_us = exp_dt.strftime("%m/%d/%Y")
+        expires_us = exp_dt.strftime("%d/%m/%Y")
         alert = days_left <= ALERT_DAYS
         
         label = f"{ALERT_EMOJI} {expires_us} ({days_left}d)" if alert else f"{expires_us} ({days_left}d)"
@@ -267,7 +267,7 @@ def _fetch_one(domain: str) -> Dict:
         exp_dt = dtparse.isoparse(exp_iso).astimezone(timezone.utc)
         today = datetime.now(timezone.utc).date()
         days_left = (exp_dt.date() - today).days
-        expires_us = exp_dt.strftime("%m/%d/%Y")
+        expires_us = exp_dt.strftime("%d/%m/%Y")
         alert = days_left <= ALERT_DAYS
 
         label = f"{ALERT_EMOJI} {expires_us} ({days_left}d)" if alert else f"{expires_us} ({days_left}d)"
@@ -322,7 +322,7 @@ def _fetch_manual(domain: str) -> Dict | None:
 
         today = datetime.now(timezone.utc).date()
         days_left = (exp_dt.date() - today).days
-        expires_us = exp_dt.strftime("%m/%d/%Y")
+        expires_us = exp_dt.strftime("%d/%m/%Y")
         alert = days_left <= ALERT_DAYS
 
         label = (
